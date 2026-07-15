@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>IntelliShop AI</title>
+  <style>
+    :root {
+      --ink: #111827;
+      --muted: #64748b;
+      --line: rgba(255,255,255,.72);
+      --glass: rgba(255,255,255,.74);
+      --green: #059669;
+      --blue: #2563eb;
+      --rose: #e11d48;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(16,185,129,.16), transparent 28rem),
+        linear-gradient(135deg, #f8fafc 0%, #fff7ed 43%, #eef6ff 100%);
+    }
+    a { color: inherit; text-decoration: none; }
+    button, input { font: inherit; }
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(22px);
+      background: rgba(255,255,255,.72);
+      border-bottom: 1px solid rgba(255,255,255,.8);
+    }
+    .nav-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 12px 18px;
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: 0; white-space: nowrap; }
+    .logo-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      background: #0f172a;
+      color: white;
+      display: grid;
+      place-items: center;
+    }
+    .nav-search {
+      flex: 1;
+      min-width: 170px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid #e5e7eb;
+      background: white;
+      border-radius: 999px;
+      padding: 10px 14px;
+      box-shadow: 0 8px 28px rgba(15,23,42,.06);
+    }
+    .nav-search input, .hero-search input {
+      border: 0;
+      outline: 0;
+      min-width: 0;
+      width: 100%;
+      background: transparent;
+    }
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      cursor: pointer;
+    }
+    .icon-btn:hover { background: #f1f5f9; }
+    main { max-width: 1180px; margin: 0 auto; padding: 22px 18px 54px; }
+    .grid-top { display: grid; grid-template-columns: 1.35fr .65fr; gap: 18px; }
+    .glass {
+      background: var(--glass);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 24px 80px rgba(10,18,38,.12);
+      backdrop-filter: blur(22px);
+    }
+    .hero { padding: 30px; }
+    .eyebrow { display: flex; align-items: center; gap: 8px; color: var(--muted); font-weight: 700; font-size: 14px; }
+    h1 {
+      margin: 14px 0 0;
+      max-width: 780px;
+      font-size: clamp(40px, 7vw, 72px);
+      line-height: .95;
+      letter-spacing: 0;
+    }
+    .hero-search {
+      margin-top: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 12px;
+    }
+    .btn {
+      border: 1px solid #e5e7eb;
+      background: white;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .btn.primary { background: #0f172a; color: white; border-color: #0f172a; }
+    .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 18px; }
+    .chip {
+      border: 1px solid rgba(255,255,255,.85);
+      background: white;
+      border-radius: 999px;
+      padding: 9px 14px;
+      font-size: 14px;
+      font-weight: 750;
+    }
+    .assistant { padding: 18px; }
+    .assistant-head { display: flex; gap: 12px; align-items: center; }
+    .assistant h2, .info h2, .section-head h2 { margin: 0; }
+    .assistant p, .info p { margin: 4px 0 0; color: var(--muted); font-size: 14px; }
+    .prompt-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+    .prompt {
+      border: 1px solid #e5e7eb;
+      border-radius: 999px;
+      background: white;
+      padding: 9px 12px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .chatbox {
+      margin-top: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid #e5e7eb;
+      background: white;
+      border-radius: 999px;
+      padding: 8px;
+    }
+    .info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 18px; }
+    .info { padding: 18px; }
+    .section-head { display: flex; justify-content: space-between; align-items: center; margin: 30px 0 12px; }
+    .section-head button { border: 0; background: transparent; color: var(--muted); font-weight: 800; cursor: pointer; }
+    .products { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .card {
+      overflow: hidden;
+      background: rgba(255,255,255,.78);
+      border: 1px solid rgba(255,255,255,.8);
+      border-radius: 8px;
+      box-shadow: 0 24px 80px rgba(10,18,38,.12);
+    }
+    .image-wrap { position: relative; aspect-ratio: 4/5; overflow: hidden; background: #e5e7eb; }
+    .image-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .badge {
+      position: absolute;
+      left: 12px;
+      top: 12px;
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: rgba(255,255,255,.86);
+      font-size: 12px;
+      font-weight: 900;
+    }
+    .score {
+      position: absolute;
+      left: 12px;
+      bottom: 12px;
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: rgba(15,23,42,.88);
+      color: white;
+      font-size: 12px;
+      font-weight: 900;
+    }
+    .card-body { padding: 14px; }
+    .store-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+    .store {
+      border-radius: 999px;
+      padding: 6px 9px;
+      font-size: 12px;
+      font-weight: 900;
+      background: #dbeafe;
+      color: #1e3a8a;
+    }
+    .store.myntra { background: #fce7f3; color: #9d174d; }
+    .store.amazon { background: #fef3c7; color: #92400e; }
+    .store.flipkart { background: #dbeafe; color: #1e3a8a; }
+    .predict { color: var(--green); font-size: 12px; font-weight: 800; }
+    .card h3 { min-height: 44px; margin: 12px 0 4px; font-size: 15px; line-height: 1.35; }
+    .category { margin: 0; color: var(--muted); font-size: 12px; }
+    .price-row { display: flex; justify-content: space-between; gap: 10px; align-items: end; margin-top: 12px; }
+    .price { font-size: 21px; font-weight: 950; }
+    .mrp { color: #94a3b8; text-decoration: line-through; font-size: 12px; }
+    .trust { text-align: right; color: var(--muted); font-size: 12px; line-height: 1.55; }
+    .compare {
+      margin-top: 30px;
+      padding: 18px;
+      overflow-x: auto;
+    }
+    table { width: 100%; min-width: 760px; border-collapse: collapse; font-size: 14px; }
+    th, td { padding: 14px; text-align: left; border-bottom: 1px solid #e5e7eb; }
+    th { font-weight: 900; }
+    .best { color: var(--green); font-weight: 900; }
+    @media (max-width: 900px) {
+      .grid-top, .info-grid { grid-template-columns: 1fr; }
+      .products { grid-template-columns: repeat(2, 1fr); }
+      .nav-search { display: none; }
+      .hero-search { flex-wrap: wrap; }
+    }
+    @media (max-width: 560px) {
+      .products { grid-template-columns: 1fr; }
+      .hero { padding: 22px; }
+      h1 { font-size: 42px; }
+      .hero-search input { flex-basis: 100%; min-height: 36px; }
+      .btn { flex: 1; }
+    }
+  </style>
+</head>
+<body>
+  <script>
+  window.wxOConfiguration = {
+    orchestrationID: "d6de0bb52db84b768a16965a749334fd_6c9fb1a9-e0b9-4724-b427-859d18489ef6",
+    hostURL: "https://au-syd.watson-orchestrate.cloud.ibm.com",
+    rootElementID: "root",
+    deploymentPlatform: "ibmcloud",
+    crn: "crn:v1:bluemix:public:watsonx-orchestrate:au-syd:a/d6de0bb52db84b768a16965a749334fd:6c9fb1a9-e0b9-4724-b427-859d18489ef6::",
+    chatOptions: {
+        agentId: "30d9f443-7913-4b3b-8b3c-3c7dc0f9699e", 
+    }
+  };
+  setTimeout(function () {
+    const script = document.createElement('script');
+    script.src = `${window.wxOConfiguration.hostURL}/wxochat/wxoLoader.js?embed=true`;
+    script.addEventListener('load', function () {
+        wxoLoader.init();
+    });
+    document.head.appendChild(script);
+  }, 0);                     
+</script>
+  <header class="nav">
+    <div class="nav-inner">
+      <a href="#" class="logo"><span class="logo-mark">✦</span><span>IntelliShop AI</span></a>
+      <div class="nav-search"><span>⌕</span><input placeholder="Search phones, shoes, outfits, screenshots..." /></div>
+      <button class="icon-btn" title="Image Search">▧</button>
+      <button class="icon-btn" title="Wishlist">♡</button>
+      <button class="icon-btn" title="Compare">⇄</button>
+      <button class="icon-btn" title="Dark Mode">◐</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="grid-top">
+      <div class="glass hero">
+        <div class="eyebrow">✦ Personalized shopping intelligence across major stores</div>
+        <h1>What are you looking for today?</h1>
+        <div class="hero-search">
+          <span>⌕</span>
+          <input placeholder="running shoes under ₹5000, gaming laptop, iphone, wireless earbuds..." />
+          <button class="btn">▧ Image</button>
+          <button class="btn primary">⚡ Search</button>
+        </div>
+        <div class="chips">
+          <button class="chip">Fashion</button>
+          <button class="chip">Electronics</button>
+          <button class="chip">Shoes</button>
+          <button class="chip">Beauty</button>
+          <button class="chip">Home</button>
+          <button class="chip">Gaming</button>
+          <button class="chip">Luxury</button>
+        </div>
+      </div>
+
+      <aside class="glass assistant">
+        <div class="assistant-head">
+          <span class="logo-mark">AI</span>
+          <div>
+            <h2>AI Shopping Copilot</h2>
+            <p>Ask, upload, scan, compare, or build an outfit.</p>
+          </div>
+        </div>
+        <div class="prompt-row">
+          <button class="prompt">Best phone under ₹30000</button>
+          <button class="prompt">Find a dress similar to this image</button>
+          <button class="prompt">Which laptop is future proof?</button>
+          <button class="prompt">Best shoes for marathon</button>
+        </div>
+        <div class="chatbox">
+          <button class="icon-btn" title="Upload">⇧</button>
+          <button class="icon-btn" title="Camera">▧</button>
+          <button class="icon-btn" title="Voice">◉</button>
+          <input placeholder="Detect fake reviews, find coupons, compare..." />
+          <button class="icon-btn" title="Send">➜</button>
+        </div>
+      </aside>
+    </section>
+
+    <section class="info-grid">
+      <div class="glass info"><h2>Smart Deal Finder</h2><p>Ranks actual discount, historical discount, value, and popularity.</p></div>
+      <div class="glass info"><h2>Fake Review Detection</h2><p>Finds repeated phrases, bot-like reviewers, spam, and rating manipulation.</p></div>
+      <div class="glass info"><h2>Smart Filters</h2><p>Filter by price, brand, color, size, delivery, seller, discount, and AI score.</p></div>
+    </section>
+
+    <section>
+      <div class="section-head"><h2>Trending Products</h2><button>View all</button></div>
+      <div class="products">
+        <article class="card">
+          <div class="image-wrap">
+            <img alt="AirRunner Pro Knit Marathon Shoes" src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200&auto=format&fit=crop" />
+            <span class="badge">46% off</span><span class="score">AI 92/100</span>
+          </div>
+          <div class="card-body">
+            <div class="store-row"><span class="store myntra">Myntra</span><span class="predict">Price drop likely</span></div>
+            <h3>AirRunner Pro Knit Marathon Shoes</h3><p class="category">Shoes</p>
+            <div class="price-row"><div><div class="price">₹4,299</div><div class="mrp">₹7,999</div></div><div class="trust">Trust 88<br />Weekend sale</div></div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="image-wrap">
+            <img alt="Nova Phone X 5G" src="https://images.unsplash.com/photo-1598327105666-5b89351aff97?q=80&w=1200&auto=format&fit=crop" />
+            <span class="badge">17% off</span><span class="score">AI 89/100</span>
+          </div>
+          <div class="card-body">
+            <div class="store-row"><span class="store amazon">Amazon</span><span class="predict">Wait 10 days</span></div>
+            <h3>Nova Phone X 5G 256GB</h3><p class="category">Electronics</p>
+            <div class="price-row"><div><div class="price">₹28,999</div><div class="mrp">₹34,999</div></div><div class="trust">Trust 82<br />Card coupon</div></div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="image-wrap">
+            <img alt="StudioBook laptop" src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=1200&auto=format&fit=crop" />
+            <span class="badge">24% off</span><span class="score">AI 94/100</span>
+          </div>
+          <div class="card-body">
+            <div class="store-row"><span class="store flipkart">Flipkart</span><span class="predict">Sale soon</span></div>
+            <h3>StudioBook 14 OLED AI Laptop</h3><p class="category">Gaming</p>
+            <div class="price-row"><div><div class="price">₹94,990</div><div class="mrp">₹1,24,990</div></div><div class="trust">Trust 91<br />Top pick</div></div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="image-wrap">
+            <img alt="Silk evening dress" src="https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1200&auto=format&fit=crop" />
+            <span class="badge">44% off</span><span class="score">AI 86/100</span>
+          </div>
+          <div class="card-body">
+            <div class="store-row"><span class="store myntra">Myntra</span><span class="predict">Stable price</span></div>
+            <h3>Aurelia Silk Blend Evening Dress</h3><p class="category">Fashion</p>
+            <div class="price-row"><div><div class="price">₹3,899</div><div class="mrp">₹6,999</div></div><div class="trust">Trust 79<br />STYLE15</div></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="glass compare">
+      <div class="section-head" style="margin-top:0"><h2>One-click Compare</h2><button>AI Recommendation</button></div>
+      <table>
+        <thead><tr><th>Metric</th><th>AirRunner Pro</th><th>Nova Phone X</th><th>StudioBook 14</th></tr></thead>
+        <tbody>
+          <tr><td>Price</td><td>₹4,299</td><td>₹28,999</td><td>₹94,990</td></tr>
+          <tr><td>Rating</td><td>4.6</td><td>4.4</td><td>4.7</td></tr>
+          <tr><td>Review Count</td><td>18,420</td><td>64,210</td><td>9,320</td></tr>
+          <tr><td>Coupons</td><td>RUN12</td><td>CARD3000</td><td>LAPTOP7</td></tr>
+          <tr><td>AI Recommendation</td><td class="best">Best for runners</td><td>Best under ₹30000</td><td class="best">Most future proof</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>
