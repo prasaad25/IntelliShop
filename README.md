@@ -296,4 +296,8 @@ This project is developed for educational and research purposes.
 
 **IntelliShop AI Team**
 
+<<<<<<< HEAD
 AI-Powered Intelligent Shopping Agent using **Langflow + Agentic AI**
+=======
+AI-Powered Intelligent Shopping Agent using **Langflow + Agentic AI**
+>>>>>>> 10b8ea5c68cbefcf5d5e431ef2a3c6c654d23681
