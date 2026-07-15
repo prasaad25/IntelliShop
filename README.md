@@ -29,77 +29,7 @@ The system acts as a personal shopping assistant that understands user intent, c
 
 ---
 
-## 🏗️ Architecture
 
-```
-User Query
-      │
-      ▼
-Intent Detection
-      │
-      ▼
-Preference Extraction
-      │
-      ▼
-Memory
-      │
-      ▼
-Product Search APIs
-      │
-      ▼
-Data Processing
-      │
-      ▼
-Review Analysis
-      │
-      ▼
-Price Comparison
-      │
-      ▼
-Recommendation Engine
-      │
-      ▼
-Response Formatter
-      │
-      ▼
-Chat Output
-```
-
----
-
-# 🧩 Langflow Workflow
-
-The project is implemented using Langflow components.
-
-```
-Chat Input
-      │
-      ▼
-Shopping Agent
-      │
-      ├──────────────┐
-      │              │
-      ▼              ▼
- Search API       Product API
-      │              │
-      └──────┬───────┘
-             ▼
-     Review Analysis
-             │
-             ▼
-    Comparison Engine
-             │
-             ▼
- Recommendation Agent
-             │
-             ▼
-     Response Formatter
-             │
-             ▼
-        Chat Output
-```
-
----
 
 # 🤖 Agentic AI Workflow
 
@@ -130,34 +60,7 @@ Shopping Agent
 
 ---
 
-# 📂 Project Structure
 
-```
-IntelliShop-AI/
-│
-├── langflow/
-│   └── shopping_agent.json
-│
-├── frontend/
-│   ├── index.html
-│   ├── style.css
-│   └── script.js
-│
-├── backend/
-│   ├── api.py
-│   ├── tools.py
-│   └── recommender.py
-│
-├── assets/
-│
-├── screenshots/
-│
-├── README.md
-│
-└── requirements.txt
-```
-
----
 
 # 🚀 How It Works
 
@@ -292,12 +195,6 @@ This project is developed for educational and research purposes.
 
 ---
 
-# 👨‍💻 Developed By
 
-**IntelliShop AI Team**
-
-<<<<<<< HEAD
-AI-Powered Intelligent Shopping Agent using **Langflow + Agentic AI**
-=======
-AI-Powered Intelligent Shopping Agent using **Langflow + Agentic AI**
+AI-Powered Intelligent Shopping Agent using **Agentic AI**
 >>>>>>> 10b8ea5c68cbefcf5d5e431ef2a3c6c654d23681
